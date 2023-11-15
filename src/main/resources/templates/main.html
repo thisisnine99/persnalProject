@@ -19,29 +19,46 @@
         <!-- 왼쪽 컨텐츠 노트 -->
         <div class="left-menu">
             <form action="/note/create" method="post">
-                <input type="submit" value="노트추가" class="btn btn-active btn-block" style="transition: none; animation: none;">
+                <input type="submit" value="노트추가" class="btn btn-active btn-block"
+                       style="transition: none; animation: none;">
             </form>
             <form action="/note/delete" method="post">
                 <input type="hidden" name="targetNoteid" th:value="${targetNote.id}">
-                <input type="button" value="노트삭제" class="btn btn-active btn-block" style="transition: none; animation: none;" onclick="confirmClick(this, DELETE)">
+                <input type="button" value="노트삭제" class="btn btn-active btn-block"
+                       style="transition: none; animation: none;" onclick="confirmClick(this, DELETE)">
             </form>
             <h1>노트목록</h1>
             <ul class="menu bg-base-200 rounded-box">
-                <li th:replace="~{/fragments :: tree(${targetNote}, ${noteList})}"></li>
+<!--                <li th:replace="~{/fragments :: tree(${targetNote}, ${noteList})}"></li>-->
+                <li th:each="note : ${noteList}">
+                    <a th:href="@{|/note/${note.id}|}" th:if="${note.getChildList().isEmpty()}" th:text="${note.title}"
+                       th:class="${note.id == targetNote.id} ? 'now' : ''"></a>
+                    <details th:unless="${note.getChildList().isEmpty()}" open>
+                        <summary th:class="${note.id == targetNote.id} ? 'now' : ''">
+                            <a th:href="@{|/note/${note.id}|}" th:text="${note.title}"></a>
+                        </summary>
+<!--                        <ul>-->
+<!--                            <li th:replace="~{/fragments :: tree(${targetNote}, ${note.getChildList()})}"></li>-->
+<!--                        </ul>-->
+                    </details>
+                </li>
             </ul>
             <form action="/note/groupAdd" method="post">
-                <input type="submit" value="하위노트추가" class="btn btn-active btn-block" style="transition: none; animation: none;">
+                <input type="submit" value="하위노트추가" class="btn btn-active btn-block"
+                       style="transition: none; animation: none;">
                 <input type="hidden" name="targetNoteid" th:value="${targetNote.id}">
             </form>
         </div>
         <!-- 왼쪽 컨텐츠 글 -->
         <div class="left-menu">
             <form action="/article/create" method="post">
-                <input type="submit" value="글추가" class="btn btn-active btn-block" style="transition: none; animation: none;">
+                <input type="submit" value="글추가" class="btn btn-active btn-block"
+                       style="transition: none; animation: none;">
                 <input type="hidden" name="targetNoteid" th:value="${targetNote.id}">
             </form>
             <form action="/article/delete" method="post">
-                <input type="button" value="글삭제" class="btn btn-active btn-block" style="transition: none; animation: none;" onclick="confirmClick(this, DELETE)">
+                <input type="button" value="글삭제" class="btn btn-active btn-block"
+                       style="transition: none; animation: none;" onclick="confirmClick(this, DELETE)">
                 <input type="hidden" name="targetArticleid" th:value="${targetArticle.id}">
             </form>
             <h1>글목록</h1>
@@ -59,7 +76,8 @@
                 <div class="textbox">
                     <textarea name="content" cols="30" rows="10" th:text="${targetArticle.content}"></textarea>
                 </div>
-                <input type="button" value="수정하기" class="btn btn-active" style="transition: none; animation: none;" onclick="confirmClick(this, MODIFY)">
+                <input type="button" value="수정하기" class="btn btn-active" style="transition: none; animation: none;"
+                       onclick="confirmClick(this, MODIFY)">
             </form>
         </div>
     </div>

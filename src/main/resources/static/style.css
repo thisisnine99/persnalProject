@@ -61,7 +61,7 @@ a {
     border: white;
     margin:10px;
 }
-textarea {
+.textbox > textarea {
     padding:10px;
     width:80%;
     font-size:30px;
